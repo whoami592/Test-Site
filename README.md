@@ -1,2 +1,267 @@
 # Test-Site
 Test Site 7 Template coded by Pakistani Ethical hacker Mr Sabaz ali khan Only for test free
+
+
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MR Sabaz Ali Khan - Ethical Hacker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #0f0;
+            overflow-x: hidden;
+        }
+
+        /* Background animation for hacker vibe */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.imgur.com/5qZ5z9b.gif') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #0f0;
+            box-shadow: 0 0 20px #0f0;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            animation: glitch 2s linear infinite;
+        }
+
+        header p {
+            font-size: 1.2em;
+            color: #00ff00;
+            margin-top: 10px;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #0f0;
+        }
+
+        nav a {
+            color: #0f0;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #0f0;
+            border-radius: 10px;
+            box-shadow: 0 0 30px #0f0;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .hero h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        .hero p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #ccc;
+        }
+
+        .services, .about, .contact {
+            margin: 40px 0;
+            padding: 20px;
+            border-left: 4px solid #0f0;
+        }
+
+        .services h2, .about h2, .contact h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #00ff00;
+        }
+
+        .services ul {
+            list-style: none;
+        }
+
+        .services ul li {
+            font-size: 1.1em;
+            margin: 10px 0;
+            color: #ccc;
+        }
+
+        .contact p {
+            font-size: 1.1em;
+            color: #ccc;
+            margin: 10px 0;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            text-align: center;
+            border-top: 2px solid #0f0;
+            color: #0f0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Glitch animation for hacker style */
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-5px, 5px);
+            }
+            40% {
+                transform: translate(5px, -5px);
+            }
+            60% {
+                transform: translate(-5px, 5px);
+            }
+            80% {
+                transform: translate(5px, -5px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    <header>
+        <h1>MR Sabaz Ali Khan</h1>
+        <p>Pakistan's Premier Ethical Hacker</p>
+    </header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div class="container">
+        <div class="hero" id="home">
+            <h2>Welcome to the Cyber Realm</h2>
+            <p>I am MR Sabaz Ali Khan, an ethical hacker from Pakistan, dedicated to securing the digital world. With expertise in penetration testing, vulnerability assessment, and cybersecurity consulting, I protect organizations from cyber threats.</p>
+        </div>
+        <div class="services" id="services">
+            <h2>Services</h2>
+            <ul>
+                <li>Penetration Testing & Vulnerability Assessment</li>
+                <li>Network Security Auditing</li>
+                <li>Web Application Security</li>
+                <li>Cybersecurity Training & Workshops</li>
+                <li>Incident Response & Forensics</li>
+            </ul>
+        </div>
+        <div class="about" id="about">
+            <h2>About Me</h2>
+            <p>Based in Pakistan, I am a certified ethical hacker with years of experience in the cybersecurity field. My mission is to empower businesses and individuals by safeguarding their digital assets. I combine technical expertise with a passion for ethical hacking to deliver top-notch security solutions.</p>
+        </div>
+        <div class="contact" id="contact">
+            <h2>Contact</h2>
+            <p>Email: Sabazali236@gmail.com</p>
+            <p>Phone: +923409777222</p>
+            <p>Location: KPK Buner, Pakistan</p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 MR Sabaz Ali Khan. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
