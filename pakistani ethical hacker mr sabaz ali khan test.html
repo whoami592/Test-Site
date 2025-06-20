@@ -1,0 +1,264 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Sabaz Ali Khan - Ethical Hacker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d1b2a, #1b263b);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        nav {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: #00ff88;
+            text-decoration: none;
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        nav ul li a:hover {
+            transform: scale(1.2);
+            color: #ffffff;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            perspective: 1000px;
+        }
+
+        .hero-content {
+            transform: rotateY(10deg);
+            transition: transform 0.5s;
+        }
+
+        .hero-content:hover {
+            transform: rotateY(0deg);
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            margin-top: 10px;
+            color: #cccccc;
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 2.5em;
+            color: #00ff88;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 5px #00ff88;
+        }
+
+        .about, .services, .contact {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            transform: translateZ(20px);
+            transition: transform 0.5s;
+        }
+
+        .about:hover, .services:hover, .contact:hover {
+            transform: translateZ(40px);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: rgba(0, 255, 136, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        .contact a {
+            color: #00ff88;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #cccccc;
+        }
+
+        /* Animations */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #00ff88; }
+            50% { text-shadow: 0 0 20px #00ff88, 0 0 30px #00ff88; }
+            100% { text-shadow: 0 0 5px #00ff88; }
+        }
+
+        .hero h1, section h2 {
+            animation: glow 2s infinite;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1.2em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Mr. Sabaz Ali Khan</h1>
+            <p>Ethical Hacker & Cybersecurity Expert</p>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <p>I am Sabaz Ali Khan, a dedicated ethical hacker committed to securing systems by identifying vulnerabilities using advanced hacking techniques and tools. Known as a white-hat hacker, I specialize in ensuring system security and protecting sensitive data. My mission is to make the digital world safer through responsible vulnerability discovery.</p>
+    </section>
+
+    <section id="services" class="services">
+        <h2>Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Penetration Testing</h3>
+                <p>Identifying and exploiting vulnerabilities in systems to strengthen security.</p>
+            </div>
+            <div class="service-card">
+                <h3>Vulnerability Assessment</h3>
+                <p>Comprehensive analysis to detect potential weaknesses in your network.</p>
+            </div>
+            <div class="service-card">
+                <h3>Cybersecurity Consulting</h3>
+                <p>Expert guidance to enhance your organization's security posture.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Contact</h2>
+        <p>Reach out for professional cybersecurity services:</p>
+        <p>Email: <a href="mailto:Sabazali236@gmail.com">Sabazali236@gmail.com</a></p>
+        <p>Alternate Email: <a href="mailto:Sabazali090@gmail.com">Sabazali090@gmail.com</a></p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Mr. Sabaz Ali Khan. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

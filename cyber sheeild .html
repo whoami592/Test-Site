@@ -1,0 +1,224 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pakistan Ethical Hacker - Mr. Sabaz Ali Khan</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #0f0;
+            overflow-x: hidden;
+        }
+        header {
+            background: #111;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #0f0;
+            box-shadow: 0 0 10px #0f0;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        header p {
+            font-size: 1.2em;
+            color: #0cc;
+        }
+        nav {
+            background: #222;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: #0f0;
+            margin: 0 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #0cc;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .section {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #0f0;
+        }
+        .section h2 {
+            color: #0cc;
+            border-bottom: 1px solid #0f0;
+            padding-bottom: 10px;
+        }
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .tool {
+            background: #222;
+            padding: 15px;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+        .tool:hover {
+            transform: scale(1.05);
+        }
+        .tool h3 {
+            margin: 0 0 10px;
+            color: #0f0;
+        }
+        .tool p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        .php-code {
+            background: #000;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            color: #0f0;
+        }
+        footer {
+            background: #111;
+            padding: 10px;
+            text-align: center;
+            color: #0cc;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            border-top: 2px solid #0f0;
+        }
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            nav a {
+                margin: 0 10px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Pakistan Ethical Hacker</h1>
+        <p>Mr. Sabaz Ali Khan - Securing the Digital World</p>
+    </header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#tools">Cybersecurity Tools</a>
+        <a href="#ethical-hacking">Ethical Hacking</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div class="container">
+        <div class="section" id="home">
+            <h2>Welcome</h2>
+            <p>Welcome to the official website of Pakistan Ethical Hacker Mr. Sabaz Ali Khan. Explore cutting-edge cybersecurity tools and ethical hacking resources to protect and secure digital assets.</p>
+        </div>
+        <div class="section" id="tools">
+            <h2>Top Cybersecurity Tools</h2>
+            <p>A curated selection of powerful cybersecurity tools used by ethical hackers worldwide. (Note: This is a sample of 20 tools; a full list of 100 can be expanded upon request.)</p>
+            <div class="tool-list">
+                <div class="tool">
+                    <h3>Nmap</h3>
+                    <p>Network exploration tool and security/port scanner.</p>
+                </div>
+                <div class="tool">
+                    <h3>Wireshark</h3>
+                    <p>Network protocol analyzer for traffic monitoring.</p>
+                </div>
+                <div class="tool">
+                    <h3>Metasploit</h3>
+                    <p>Penetration testing framework for simulating attacks.</p>
+                </div>
+                <div class="tool">
+                    <h3>Burp Suite</h3>
+                    <p>Web vulnerability scanner and proxy tool.</p>
+                </div>
+                <div class="tool">
+                    <h3>John the Ripper</h3>
+                    <p>Password cracker for testing password strength.</p>
+                </div>
+                <div class="tool">
+                    <h3>SQLmap</h3>
+                    <p>Automated tool for SQL injection and database takeover.</p>
+                </div>
+                <div class="tool">
+                    <h3>Nikto</h3>
+                    <p>Web server scanner for identifying vulnerabilities.</p>
+                </div>
+                <div class="tool">
+                    <h3>Hydra</h3>
+                    <p>Brute-force attack tool for testing login security.</p>
+                </div>
+                <div class="tool">
+                    <h3>Aircrack-ng</h3>
+                    <p>Wi-Fi security auditing toolset.</p>
+                </div>
+                <div class="tool">
+                    <h3>Kali Linux</h3>
+                    <p>Linux distribution for security researchers.</p>
+                </div>
+                <div class="tool">
+                    <h3>Hashcat</h3>
+                    <p>Advanced password recovery tool.</p>
+                </div>
+                <div class="tool">
+                    <h3>Tor Browser</h3>
+                    <p>Anonymous browsing for privacy protection.</p>
+                </div>
+                <div class="tool">
+                    <h3>OpenVAS</h3>
+                    <p>Open-source vulnerability scanner.</p>

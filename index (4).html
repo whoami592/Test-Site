@@ -1,0 +1,100 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pakistani Ethical Hacker - Mr. Sabaz Ali Khan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .glitch {
+            position: relative;
+            animation: glitch 1s linear infinite;
+        }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px, 0) skew(0deg); }
+            4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+            62% { transform: translate(0, 0) skew(5deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center">
+    <header class="text-center py-10">
+        <h1 class="text-5xl font-bold glitch">Pakistani Ethical Hacker</h1>
+        <h2 class="text-3xl mt-2">Mr. Sabaz Ali Khan</h2>
+        <p class="mt-4 text-lg">Securing the Digital World with White-Hat Expertise</p>
+    </header>
+    <main class="bg-black bg-opacity-70 p-8 rounded-lg shadow-lg w-full max-w-md">
+        <form action="upload.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="file" class="block text-lg">Upload Data (Images, Text, PDFs):</label>
+                <input type="file" name="file" id="file" class="w-full p-2 bg-gray-800 border border-green-500 rounded" required>
+            </div>
+            <button type="submit" class="w-full bg-green-500 text-black font-bold py-2 rounded hover:bg-green-700 transition">Upload</button>
+        </form>
+        <div id="message" class="mt-4 text-center"></div>
+    </main>
+    <footer class="mt-8 text-center">
+        <p>&copy; 2025 Mr. Sabaz Ali Khan. All rights reserved.</p>
+    </footer>
+    <script>
+        // Simple client-side validation and feedback
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fileInput = document.getElementById('file');
+            const file = fileInput.files[0];
+            if (file && file.size > 5 * 1024 * 1024) { // 5MB limit
+                e.preventDefault();
+                document.getElementById('message').innerText = 'File size exceeds 5MB limit!';
+                document.getElementById('message').classList.add('text-red-500');
+            }
+        });
+    </script>
+</body>
+</html>
